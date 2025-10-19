@@ -30,7 +30,6 @@ function world:pair(component_id, entity_id)
 		["Component"] = component;
 		["Entity"] = entity;
 		["Linked"] = {};
-		is_pair = true;
 	}
 	table.insert(component.Pairs, pair_data)
 	return pair_data
@@ -105,14 +104,13 @@ end
 
 function world:query(component_id, t)
 	local queried = {}
-	if typeof(t) == "table" and t.is_pair then
-		for i, entity: entity in t.Linked do
-			table.insert(queried, entity.Components[component_id])
-		end
-	else
-		for i, entity: entity in self.entities do
-			table.insert(queried, entity.Components[component_id])
-		end
+	
+	if typeof(t) == "table" and t.Linked then
+		t = t.Linked
+	end
+	
+	for i, entity: entity in self.entities do
+		table.insert(queried, entity.Components[component_id])
 	end
 	
 	return queried
